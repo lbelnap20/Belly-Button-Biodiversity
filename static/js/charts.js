@@ -62,6 +62,8 @@ function buildCharts(sample) {
     var resultArray = demoSamples.filter(sampleObj => sampleObj.id == sample);
     //  5. Create a variable that holds the first sample in the array.
     var result = resultArray[0];
+    console.log(resultArray[0].sample_values);
+    console.log(resultArray[0].otu_ids);
     // 6. Create variables that hold the otu_ids, otu_labels, and sample_values.
     var ids = result.otu_ids.slice(0, 10).reverse().map(id =>
       'OTU ' + id);
@@ -90,14 +92,14 @@ function buildCharts(sample) {
 
     // 1. Create the trace for the bubble chart.
     var bubbleData = [{
-      x: ids,
-      y: values,
+      x: resultArray[0].otu_ids,
+      y: resultArray[0].sample_values,
       mode: 'markers',
       marker: {
-        size: values,
-        color: ids,
+        size: resultArray[0].sample_values,
+        color:  resultArray[0].otu_ids,
       },
-      text: labels,
+      text: resultArray[0].otu_labels,
     }
 
     ];
@@ -123,7 +125,16 @@ function buildCharts(sample) {
     var gaugeData = [
       {domain: {x: [0, 1], y:[0, 1]},
       value: wfreq,
-      gauge: { axis: { range: [null, 10] }},
+      gauge: { axis: { range: [null, 10] },
+              bar: { color: "black" },
+              steps: [
+                {range:[0,2], color: "red"},
+                {range:[2,4], color: "orange"},
+                {range:[4,6], color: "yellow"},
+                {range:[6,8], color: "yellowgreen"},
+                {range:[8,10], color:"green"}
+              ]
+    },
       title: {text:"Belly Button Washing Frequency<br>Scrubs Per Week"},
       type: "indicator",
       mode: "gauge+number"}
